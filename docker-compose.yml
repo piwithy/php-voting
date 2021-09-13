@@ -13,14 +13,19 @@ services:
       - php
 
   php:
-    image: php:7-fpm
+    # image: php:7-fpm
+    build:
+      context: ./php
+      dockerfile: .dockerfile
     volumes:
       - ./www/html:/var/www/html
     depends_on:
       - mariadb
+    env_file:
+      - php/.env
 
   mariadb:
     image: mariadb
     restart: on-failure
     env_file:
-      - .env
+      - mariadb/.env
