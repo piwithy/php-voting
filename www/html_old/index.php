@@ -1,5 +1,5 @@
 <?php
-include "common/mysql_driver.php";
+include "common/mysqli_connect.php";
 $page = $_SERVER['PHP_SELF'];
 $sec = "30";
 $dt = new DateTime();
@@ -26,25 +26,29 @@ $result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes GROUP 
 <head>
     <meta charset="utf-8">
     <title>Foy'z Voting - V1.0 | Index</title>
-    <link rel="stylesheet" href="css/index.css"/>
-    <link rel="stylesheet" href="css/table.css"/>
+    <link rel="stylesheet" href="../html/css/index.css"/>
+    <link rel="stylesheet" href="../html/css/table.css"/>
     <link rel="icon" href="images/icon.ico"/>
-    <script type="text/javascript" src='js/jquery-3.4.1.js'></script>
+    <script type="text/javascript" src='../html/js/jquery-3.4.1.js'></script>
 </head>
 
 <body>
 <div class="wrapper">
     <div class="caption">
-        <span class="goal"></span>
+        <span class="goal"><?php echo $title ;?><br><?php echo $sub_title?></span>
 
     </div>
     <div class="table"></div>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.goal').load("common/get_title.php");
-            $('.table').load("common/get_ranking.php");
+            function make_table(){
+
+            }
+
+
+            $('.table').load("common/request_vote.php");
             setInterval(function () {
-                $('.table').load("common/get_ranking.php")
+                $('.table').load("common/request_vote.php")
             }, 10000);
         });
     </script>
@@ -54,3 +58,6 @@ $result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes GROUP 
 </body>
 
 </html>
+
+
+
