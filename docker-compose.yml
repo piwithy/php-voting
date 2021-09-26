@@ -29,3 +29,5 @@ services:
     restart: on-failure
     env_file:
       - mariadb/.env
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
