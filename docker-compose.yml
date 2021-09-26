@@ -16,7 +16,7 @@ services:
     # image: php:7-fpm
     build:
       context: ./php
-      dockerfile: .dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ./www/html:/var/www/html
     depends_on:

@@ -44,8 +44,10 @@ $result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes GROUP 
             $('.goal').load("common/get_title.php");
             $('.table').load("common/get_ranking.php");
             setInterval(function () {
-                $('.table').load("common/get_ranking.php")
+                $('.table').load("common/get_ranking.php");
+                $('.goal').load("common/get_title.php");
             }, 10000);
+
         });
     </script>
     <div class="footer">

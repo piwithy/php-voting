@@ -1,5 +1,5 @@
 <?php
-include "mysqli_connect.php";
+include "mysql_driver.php";
 session_start();
 $isAdmin = false;
 if (isset($_SESSION['user'])) {
@@ -27,5 +27,5 @@ $result = $query->get_result();
 
 
 <script type="text/javascript">
-    window.location.replace("https://voting.piwithy.fr/admin.php");
+    window.location.replace("../admin/");
 </script>
