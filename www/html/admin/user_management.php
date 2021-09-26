@@ -2,6 +2,7 @@
 include '../common/mysql_driver.php';
 session_start();
 $isAdmin = false;
+$prod_deploy = false;
 if (isset($_SESSION['user'])) {
     $usr = htmlspecialchars($_SESSION['user']);
     $query = $mysqli->prepare("SELECT * FROM users WHERE username= ? ;");
@@ -167,7 +168,8 @@ $result = $mysqli->query("SELECT user_id, username, hash FROM users;");
                         </td>
                         <td data-label="Modifier">
                             <input form="<?php echo "edit_" . $row["user_id"] ?>"
-                                   type="submit" value="Modifier" name="">
+                                   type="submit" value="Modifier"
+                                   name="" <?php if ($prod_deploy && $row["username"] == "admin") echo "disabled"; ?>>
                         </td>
                     </tr>
                     <?php
