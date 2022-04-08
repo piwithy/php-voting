@@ -10,7 +10,7 @@ if ($result) {
     $count = $row['totalEntries'];
     $result->close();
 }
-$title = "Qui serait le meilleur survivant de l'Apocalypse ?";
+$title = "";
 $sub_title = "";
 
 
@@ -28,7 +28,7 @@ $result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes GROUP 
     <title>Foy'z Voting - V1.0 | Index</title>
     <link rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/table.css"/>
-    <link rel="icon" href="images/icon.ico"/>
+    <link rel="icon" href="https://foyz.fr/img/favicon.png"/>
     <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
