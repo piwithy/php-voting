@@ -49,7 +49,7 @@ $result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE 
     <title>Foy'z Voting - V1.0 | Admin</title>
     <link rel="stylesheet" href="../css/index.css"/>
     <link rel="stylesheet" href="../css/table.css"/>
-    <link rel="icon" href="../images/icon.ico"/>
+    <link rel="icon" href="https://foyz.fr/img/favicon.png"/>
     <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -139,20 +139,21 @@ $result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE 
             if ($result) {
                 $rank = 1;
                 while ($row = $result->fetch_row()) {
-
+                    $escaped_row = array();
+                    foreach ($row as $elem) $escaped_row[] = htmlspecialchars($elem)
                     ?>
                     <tr>
                         <td data-label="Rang"><?php echo $rank ?></td>
-                        <td data-label="Candidat"><?php echo $row[0] ?></td>
-                        <td data-label="Nombre de Votes"><?php echo number_format($row[1]) ?></td>
+                        <td data-label="Candidat"><?php echo $escaped_row[0] ?></td>
+                        <td data-label="Nombre de Votes"><?php echo number_format($escaped_row[1]) ?></td>
                         <td data-label="Quick Vote">
                             <form action="voting.php" method="post"><input type="hidden"
-                                                                           name="voteTarget" <?php echo('value="' . $row[0] . '"'); ?>>
+                                                                           name="voteTarget" <?php echo('value="' . $escaped_row[0] . '"'); ?>>
                                 <input type="submit" value="Vote!" name="quicky"></form>
                         </td>
                         <td data-label="Quick Vote">
                             <form action="voting.php" method="post"><input type="hidden"
-                                                                           name="voteTarget" <?php echo('value="' . $row[0] . '"'); ?>>
+                                                                           name="voteTarget" <?php echo('value="' . $escaped_row[0] . '"'); ?>>
                                 <input type="submit" value="Retirer" name="corr"></form>
                         </td>
                     </tr>

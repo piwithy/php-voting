@@ -59,7 +59,7 @@ $result = $mysqli->query("SELECT * FROM custom_fields;");
     <title>Foy'z Voting - V1.0 | Admin</title>
     <link rel="stylesheet" href="../css/index.css"/>
     <link rel="stylesheet" href="../css/table.css"/>
-    <link rel="icon" href="../images/icon.ico"/>
+    <link rel="icon" href="https://foyz.fr/img/favicon.png"/>
     <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -112,25 +112,26 @@ $result = $mysqli->query("SELECT * FROM custom_fields;");
 
             if ($result) {
                 while ($row = $result->fetch_assoc()) {
-
+                    $escaped_row = array();
+                    foreach ($row as $key=>$value) $escaped_row[$key] = htmlspecialchars($value);
                     ?>
 
                     <tr>
                         <td data-label="Field ID">
-                            <form id="<?php echo "edit_" . $row["field_id"] ?>" method="post"
+                            <form id="<?php echo "edit_" . $escaped_row["field_id"] ?>" method="post"
                                   action="configuration.php">
-                                <input type="hidden" name="editFieldID" value="<?php echo $row["field_id"] ?>">
+                                <input type="hidden" name="editFieldID" value="<?php echo $escaped_row["field_id"] ?>">
                             </form>
-                            <?php echo $row["field_id"] ?>
+                            <?php echo $escaped_row["field_id"] ?>
                         </td>
-                        <td data-label="Nom d'utilisateur"><?php echo $row["field_name"] ?></td>
+                        <td data-label="Nom d'utilisateur"><?php echo $escaped_row["field_name"] ?></td>
                         <td data-label="Mot de Passe">
-                            <input form="<?php echo "edit_" . $row["field_id"] ?>" type="text"
-                                   value="<?php echo $row["field_value"] ?>"
+                            <input form="<?php echo "edit_" . $escaped_row["field_id"] ?>" type="text"
+                                   value="<?php echo $escaped_row["field_value"] ?>"
                                    name="editValue">
                         </td>
                         <td data-label="Modifier">
-                            <input form="<?php echo "edit_" . $row["field_id"] ?>"
+                            <input form="<?php echo "edit_" . $escaped_row["field_id"] ?>"
                                    type="submit" value="Modifier" name="">
                         </td>
                     </tr>

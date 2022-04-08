@@ -64,7 +64,7 @@ if (isset($_GET['count'])) {
             ?>
             <tr>
                 <td data-label="Rang"><?php echo $rank ?></td>
-                <td data-label="Candidat"><?php echo $row[0] ?></td>
+                <td data-label="Candidat"><?php echo htmlspecialchars($row[0]) ?></td>
                 <td data-label="Popularité">
                     <progress max="100"
                               value=<?php echo '"' . number_format($popularity, 2) . '"'; ?>> <?php echo number_format($relative_vote, 2); ?>

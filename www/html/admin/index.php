@@ -55,7 +55,7 @@ if ($currentUser != null) {
     <meta charset="utf-8">
     <title>Foy'z Voting - V1.0 | Login</title>
     <link rel="stylesheet" href="../css/index.css"/>
-    <link rel="icon" href="../images/icon.ico"/>
+    <link rel="icon" href="https://foyz.fr/img/favicon.png"/>
 </head>
 <body>
 <div class="wrapper">

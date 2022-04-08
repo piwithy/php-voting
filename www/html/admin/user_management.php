@@ -80,7 +80,7 @@ if ($result) {
     <title>Foy'z Voting - V1.0 | Admin</title>
     <link rel="stylesheet" href="../css/index.css"/>
     <link rel="stylesheet" href="../css/table.css"/>
-    <link rel="icon" href="../images/icon.ico"/>
+    <link rel="icon" href="https://foyz.fr/img/favicon.png"/>
     <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -98,12 +98,12 @@ if ($result) {
     </script>
     <script type="text/javascript">
         function processForm(e){
-            if(!confirm('Etes vous sur de vouloir supper cet utilisateur?')){
+            if(!confirm('Etes vous sur de vouloir supprimer cet utilisateur?')){
                 e.preventDefault();
                 return false;
             }
         }
-        const delete_user_forms_list = [<?php if (isset($user_list)) foreach ($user_list as $user) echo "\"delete_".$user["user_id"]."\"," ?>];
+        const delete_user_forms_list = [<?php if (isset($user_list)) foreach ($user_list as $user) echo "\"delete_".htmlspecialchars($user["user_id"])."\"," ?>];
         $(document).ready(function () {
             for(let i = 0; i< delete_user_forms_list.length; i++){
                 let form = document.getElementById(delete_user_forms_list[i]);
@@ -195,35 +195,36 @@ if ($result) {
 
             if ($result && isset($user_list)) {
                foreach ($user_list as $user){
-
+                   $escaped_user = array();
+                   foreach ($user as $key => $value) $escaped_user[$key] = htmlspecialchars($value);
                     ?>
 
                     <tr>
                         <td data-label="User ID">
-                            <form id="<?php echo "edit_" . $user["user_id"] ?>" method="post"
+                            <form id="<?php echo "edit_" . $escaped_user["user_id"] ?>" method="post"
                                   action="user_management.php">
-                                <input type="hidden" name="editUserID" value="<?php echo $user["user_id"] ?>">
+                                <input type="hidden" name="editUserID" value="<?php echo $escaped_user["user_id"] ?>">
                             </form>
-                            <form id="<?php echo "delete_" . $user["user_id"] ?>" method="post"
+                            <form id="<?php echo "delete_" . $escaped_user["user_id"] ?>" method="post"
                                   action="user_management.php">
-                                <input type="hidden" name="deleteUserID" value="<?php echo $user["user_id"] ?>">
+                                <input type="hidden" name="deleteUserID" value="<?php echo $escaped_user["user_id"] ?>">
                             </form>
-                            <?php echo $user["user_id"] ?>
+                            <?php echo $escaped_user["user_id"] ?>
                         </td>
-                        <td data-label="Nom d'utilisateur"><?php echo $user["username"] ?></td>
+                        <td data-label="Nom d'utilisateur"><?php echo $escaped_user["username"] ?></td>
                         <td data-label="Mot de Passe">
-                            <input form="<?php echo "edit_" . $user["user_id"] ?>" type="password"
+                            <input form="<?php echo "edit_" . $escaped_user["user_id"] ?>" type="password"
                                    name="editPassword">
                         </td>
                         <td data-label="Modifier">
-                            <input form="<?php echo "edit_" . $user["user_id"] ?>"
+                            <input form="<?php echo "edit_" . $escaped_user["user_id"] ?>"
                                    type="submit" value="Modifier"
-                                   name="" <?php if ($prod_deploy && $user["username"] == "admin") echo "disabled"; ?>>
+                                   name="" <?php if ($prod_deploy && $escaped_user["username"] == "admin") echo "disabled"; ?>>
                         </td>
                         <td data-label="Supprimer">
-                            <input id="delete_btn" form="<?php echo "delete_" . $user["user_id"] ?>"
+                            <input id="delete_btn" form="<?php echo "delete_" . $escaped_user["user_id"] ?>"
                                    type='submit' value="Supprimer"
-                                   name="" <?php if ($prod_deploy && $user["username"] == "admin") echo "disabled"; ?>>
+                                   name="" <?php if ($prod_deploy && $escaped_user["username"] == "admin") echo "disabled"; ?>>
                         </td>
                     </tr>
                     <?php
