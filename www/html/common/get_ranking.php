@@ -5,7 +5,7 @@ $page = $_SERVER['PHP_SELF'];
 $sec = "30";
 $dt = new DateTime();
 $dt->setTimezone(new DateTimeZone('Europe/Paris'));
-$result = $mysqli->query("SELECT COUNT(*) as totalEntries from votes;");
+$result = $mysqli->query("SELECT COUNT(*) as totalEntries from votes WHERE active=1;");
 $count = 0;
 if ($result) {
     $row = $result->fetch_assoc();
@@ -13,7 +13,7 @@ if ($result) {
     $result->close();
 }
 
-$result = $mysqli->query("SELECT COUNT(DISTINCT vote_target) as candidates from votes;");
+$result = $mysqli->query("SELECT COUNT(DISTINCT vote_target) as candidates from votes WHERE active=1;");
 $candidate = 0;
 if($result){
     $row = $result->fetch_assoc();
@@ -23,12 +23,12 @@ if($result){
 
 
 if (isset($_GET['count'])) {
-    $query = $mysqli->prepare("SELECT vote_target, COUNT(*) AS vote_count FROM votes GROUP BY vote_target ORDER BY vote_count DESC LIMIT ?;");
+    $query = $mysqli->prepare("SELECT vote_target, COUNT(*) AS vote_count FROM votes WHERE active=1 GROUP BY vote_target ORDER BY vote_count DESC, vote_target ASC LIMIT ?;");
     $query->bind_param("i", $_GET['count']);
     $query->execute();
     $result = $query->get_result();
 }else{
-    $query = $mysqli->prepare("SELECT vote_target, COUNT(*) AS vote_count FROM votes GROUP BY vote_target ORDER BY vote_count DESC;");
+    $query = $mysqli->prepare("SELECT vote_target, COUNT(*) AS vote_count FROM votes WHERE active=1 GROUP BY vote_target ORDER BY vote_count DESC, vote_target ASC ;");
     //$query->bind_param("i", $_GET['COUNT']);
     $query->execute();
     $result = $query->get_result();

@@ -29,7 +29,7 @@ if ($mysqli->connect_error) {
 }
 $mysqli->set_charset("utf8mb4");
 
-$mysqli->query("CREATE TABLE IF NOT EXISTS votes(vote_id INTEGER PRIMARY KEY AUTO_INCREMENT, vote_target VARCHAR(255), ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
+$mysqli->query("CREATE TABLE IF NOT EXISTS votes(vote_id INTEGER PRIMARY KEY AUTO_INCREMENT, vote_target VARCHAR(255), active INTEGER, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
 
 $mysqli->query("CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(255) UNIQUE, hash VARCHAR(255), enabled INTEGER);");
 
