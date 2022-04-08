@@ -31,7 +31,7 @@ $mysqli->set_charset("utf8mb4");
 
 $mysqli->query("CREATE TABLE IF NOT EXISTS votes(vote_id INTEGER PRIMARY KEY AUTO_INCREMENT, vote_target VARCHAR(255), ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);");
 
-$mysqli->query("CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(255), hash VARCHAR(255));");
+$mysqli->query("CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(255), hash VARCHAR(255), enabled INTEGER);");
 
 $mysqli->query("CREATE TABLE IF NOT EXISTS custom_fields(field_id INTEGER PRIMARY KEY AUTO_INCREMENT, field_name VARCHAR(255), field_value VARCHAR(1024));");
 

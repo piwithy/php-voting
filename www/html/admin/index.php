@@ -17,7 +17,7 @@ if (isset($_SESSION['user'])) {
     $result = $query->get_result();
     if ($result) {
         $row = $result->fetch_row();
-        $currentUser = $row[1];
+        if($row[3] == 1) $currentUser = $row[1];
         $result->close();
     }
 } else if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -28,7 +28,7 @@ if (isset($_SESSION['user'])) {
     $result = $query->get_result();
     if ($result && $row = $result->fetch_row()) {
         $pass = htmlspecialchars($_POST['password']);
-        if (password_verify($pass, $row[2])) {
+        if (password_verify($pass, $row[2]) && $row[3] == 1) {
             $currentUser = $row[1];
             $_SESSION['user'] = $currentUser;
         } else {
