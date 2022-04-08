@@ -21,6 +21,7 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 $edit_error = false;
+$creation_error = false;
 $edited = false;
 $created = false;
 $deleted = false;
@@ -57,7 +58,7 @@ if (isset($_POST["createUser"])) {
         if ($result = $query->execute()) {
             $created = true;
         } else {
-            $edit_error = true;
+            $creation_error = true;
         }
     }
 }
@@ -135,6 +136,8 @@ if ($result) {
                     <?php
                     if ($edit_error) {
                         echo '<span class="error"> Erreur lors de la modification des utilisateurs</span></br>';
+                    }elseif ($creation_error) {
+                        echo '<span class="error"> Erreur lors de la creation d\'utilisateur</span></br>';
                     } elseif ($edited) {
                         echo '<span class="success"> Utilisateurs Modifiés </span></br>';
                     } elseif ($created) {
