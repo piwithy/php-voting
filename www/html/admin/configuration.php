@@ -60,7 +60,10 @@ $result = $mysqli->query("SELECT * FROM custom_fields;");
     <link rel="stylesheet" href="../css/index.css"/>
     <link rel="stylesheet" href="../css/table.css"/>
     <link rel="icon" href="../images/icon.ico"/>
-    <script type="text/javascript" src="../js/jquery-3.4.1.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("a.delete").click(function (e) {
