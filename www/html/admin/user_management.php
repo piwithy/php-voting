@@ -1,8 +1,9 @@
 <?php
+
 include '../common/mysql_driver.php';
 session_start();
 $isAdmin = false;
-$prod_deploy = false;
+$prod_deploy = true;
 if (isset($_SESSION['user'])) {
     $usr = htmlspecialchars($_SESSION['user']);
     $query = $mysqli->prepare("SELECT * FROM users WHERE username= ? ;");
@@ -22,6 +23,7 @@ if (isset($_SESSION['user'])) {
 $edit_error = false;
 $edited = false;
 $created = false;
+$deleted = false;
 if (isset($_POST["editUserID"])) {
 
     if ($_POST["editPassword"]) {
@@ -35,12 +37,22 @@ if (isset($_POST["editUserID"])) {
             $edit_error = true;
         }
     }
+
 }
+
+if (isset($_POST["deleteUserID"])) {
+    $user_id = $_POST["deleteUserID"];
+    $query = $mysqli->prepare("UPDATE users SET enabled=0 WHERE user_id=?");
+    $query->bind_param("i", $user_id);
+    if ($query->execute()) $deleted = true;
+    else $edit_error = true;
+}
+
 if (isset($_POST["createUser"])) {
     if ($_POST["newUserName"] && $_POST["newUserPassword"]) {
         $n_user = $_POST["newUserName"];
         $n_password = password_hash($_POST["newUserPassword"], PASSWORD_BCRYPT);
-        $query = $mysqli->prepare("INSERT INTO users(username, hash) VALUES(?,?)");
+        $query = $mysqli->prepare("INSERT INTO users(username, hash, enabled) VALUES(?,?,1)");
         $query->bind_param("ss", $n_user, $n_password);
         if ($result = $query->execute()) {
             $created = true;
@@ -51,8 +63,13 @@ if (isset($_POST["createUser"])) {
 }
 
 
-$result = $mysqli->query("SELECT user_id, username, hash FROM users;");
-
+$result = $mysqli->query("SELECT user_id, username, hash FROM users WHERE enabled=1;");
+if ($result) {
+    $user_list = array();
+    while ($row = $result->fetch_assoc()) {
+        $user_list[] = $row;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +91,25 @@ $result = $mysqli->query("SELECT user_id, username, hash FROM users;");
                 return true;
             });
         });
+    </script>
+    <script type="text/javascript">
+        function processForm(e){
+            if(!confirm('Etes vous sur de vouloir supper cet utilisateur?')){
+                e.preventDefault();
+                return false;
+            }
+        }
+        const delete_user_forms_list = [<?php if (isset($user_list)) foreach ($user_list as $user) echo "\"delete_".$user["user_id"]."\"," ?>];
+        $(document).ready(function () {
+            for(let i = 0; i< delete_user_forms_list.length; i++){
+                let form = document.getElementById(delete_user_forms_list[i]);
+                if (form.attachEvent) {
+                    form.attachEvent("submit", processForm);
+                } else {
+                    form.addEventListener("submit", processForm);
+                }
+            }
+        })
     </script>
 </head>
 <body>
@@ -103,6 +139,8 @@ $result = $mysqli->query("SELECT user_id, username, hash FROM users;");
                         echo '<span class="success"> Utilisateurs Modifiés </span></br>';
                     } elseif ($created) {
                         echo '<span class="success"> Utilisateur Créé </span></br>';
+                    } elseif ($deleted) {
+                        echo '<span class="success"> Utilisateur Supprimé </span></br>';
                     }
                     ?>
                 </div>
@@ -143,33 +181,43 @@ $result = $mysqli->query("SELECT user_id, username, hash FROM users;");
                 <th scope="col">Nom d'utilisateur</th>
                 <th scope="col">Mot de Passe</th>
                 <th scope="col">Modifier</th>
+                <th scope="col">Supprimer</th>
             </tr>
             </thead>
             <tbody>
             <?php
 
-            if ($result) {
-                while ($row = $result->fetch_assoc()) {
+            if ($result && isset($user_list)) {
+               foreach ($user_list as $user){
 
                     ?>
 
                     <tr>
                         <td data-label="User ID">
-                            <form id="<?php echo "edit_" . $row["user_id"] ?>" method="post"
+                            <form id="<?php echo "edit_" . $user["user_id"] ?>" method="post"
                                   action="user_management.php">
-                                <input type="hidden" name="editUserID" value="<?php echo $row["user_id"] ?>">
+                                <input type="hidden" name="editUserID" value="<?php echo $user["user_id"] ?>">
                             </form>
-                            <?php echo $row["user_id"] ?>
+                            <form id="<?php echo "delete_" . $user["user_id"] ?>" method="post"
+                                  action="user_management.php">
+                                <input type="hidden" name="deleteUserID" value="<?php echo $user["user_id"] ?>">
+                            </form>
+                            <?php echo $user["user_id"] ?>
                         </td>
-                        <td data-label="Nom d'utilisateur"><?php echo $row["username"] ?></td>
+                        <td data-label="Nom d'utilisateur"><?php echo $user["username"] ?></td>
                         <td data-label="Mot de Passe">
-                            <input form="<?php echo "edit_" . $row["user_id"] ?>" type="password"
+                            <input form="<?php echo "edit_" . $user["user_id"] ?>" type="password"
                                    name="editPassword">
                         </td>
                         <td data-label="Modifier">
-                            <input form="<?php echo "edit_" . $row["user_id"] ?>"
+                            <input form="<?php echo "edit_" . $user["user_id"] ?>"
                                    type="submit" value="Modifier"
-                                   name="" <?php if ($prod_deploy && $row["username"] == "admin") echo "disabled"; ?>>
+                                   name="" <?php if ($prod_deploy && $user["username"] == "admin") echo "disabled"; ?>>
+                        </td>
+                        <td data-label="Supprimer">
+                            <input id="delete_btn" form="<?php echo "delete_" . $user["user_id"] ?>"
+                                   type='submit' value="Supprimer"
+                                   name="" <?php if ($prod_deploy && $user["username"] == "admin") echo "disabled"; ?>>
                         </td>
                     </tr>
                     <?php
@@ -179,6 +227,7 @@ $result = $mysqli->query("SELECT user_id, username, hash FROM users;");
             </tbody>
         </table>
     </div>
+
 </div>
 <script>
     $(document).ready(function () {
