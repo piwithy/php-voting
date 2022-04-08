@@ -19,7 +19,7 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-$query = $mysqli->prepare("TRUNCATE votes;");
+$query = $mysqli->prepare("UPDATE votes SET active=0 WHERE active=1;");
 $query->execute();
 $result = $query->get_result();
 //header("Location: https://voting.piwithy.fr/admin.php");

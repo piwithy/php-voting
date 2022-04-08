@@ -30,7 +30,7 @@ if(isset($_POST['corr'])){
 }else {
     if (isset($_POST['voteTarget'])) {
         $voted = true;
-        $query = $mysqli->prepare("INSERT INTO votes(vote_target) VALUES (?)");
+        $query = $mysqli->prepare("INSERT INTO votes(vote_target,active) VALUES (?, 1)");
         $vote = htmlspecialchars($_POST['voteTarget']);
         $query->bind_param("s", $vote);
         if (!$result = $query->execute()) {
@@ -38,7 +38,7 @@ if(isset($_POST['corr'])){
         }
     }
 }
-$result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes GROUP BY vote_target ORDER BY count DESC;");
+$result = $mysqli->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE active=1 GROUP BY vote_target ORDER BY count DESC, vote_target ASC;");
 
 ?>
 
