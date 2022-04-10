@@ -62,6 +62,7 @@ $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE act
         <?php if ($_SESSION['is_admin'] == 1) echo "<a href='users.php'><i class='fa-solid fa-user-group'></i>Users</a>" ?>
         <a href="config.php"><i class="fa-solid fa-gear"></i>App Config</a>
         <?php if($_SESSION['is_admin']==1) echo "<a class='reset' href='../common/edit_vote.php?reset=true' style='background-color: red'><i class='fa-solid fa-trash-can'></i>Clear Votes</a>"?>
+        <a href="contact.php"><i class="fa-solid fa-address-book"></i>Contact</a>
         <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
 </nav>

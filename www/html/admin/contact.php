@@ -10,7 +10,6 @@ $con = mysqli_connect($_ENV["DB_ADDRESS"], $_ENV["DB_USER"], $_ENV["DB_PASS"], $
 if (mysqli_connect_errno()) {
     exit('Failed to connect MySQL: ' . mysqli_connect_error());
 }
-
 $qry = $con->prepare("SELECT id, active FROM accounts where id=?");
 $qry->bind_param('i', $_SESSION['id']);
 $qry->execute();
@@ -24,14 +23,12 @@ if ($qry->num_rows > 0) {
 }
 $qry->close();
 
-$result = $con->query("SELECT * FROM custom_fields;");
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Piwithy's Voting App | Config Page</title>
+    <title>Piwithy's Voting App | Contact Page</title>
     <link rel="icon" href="../img/piwithy_logo_black.png">
     <script src="https://kit.fontawesome.com/09d79beec4.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
@@ -59,63 +56,27 @@ $result = $con->query("SELECT * FROM custom_fields;");
 <nav class="navtop">
     <div>
         <h1><a href="/">Piwithy's Voting App</a></h1>
-        <?php if($_SESSION['is_admin']==1) echo "<a href='users.php'><i class='fa-solid fa-user-group'></i>Users</a>"?>
-        <a href="vote.php"><i class="fa-solid fa-person-booth"></i>Voting Page</a>
+        <?php if ($_SESSION['is_admin'] == 1) echo "<a href='users.php'><i class='fa-solid fa-user-group'></i>Users</a>" ?>
+        <a href="config.php"><i class="fa-solid fa-gear"></i>App Config</a>
         <?php if($_SESSION['is_admin']==1) echo "<a class='reset' href='../common/edit_vote.php?reset=true' style='background-color: red'><i class='fa-solid fa-trash-can'></i>Clear Votes</a>"?>
         <a href="contact.php"><i class="fa-solid fa-address-book"></i>Contact</a>
         <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
 </nav>
 <div class="content">
-    <div id="vote_info" <?php if (empty($_GET)) echo 'style="visibility: hidden;"' ?>>
-        <?php
-        if (isset($_GET['edit_success'], $_GET['field_name'])) {
-            echo "<span class='success'> field \"" . $_GET['field_name'] . "\" Successfully edited! </span>";
-        } elseif (isset($_GET['edit_failed'], $_GET['field_name'])) {
-            echo "<span class='error'> Error while editing field \"" . $_GET['field_name'] . "\"! </span>";
-        }
-
-        ?>
+    <div class="contact_info">
+        <h2><i class="fa-solid fa-address-book"></i> Contact</h2>
+        <p>Voting App Developped By: Pierre-Yves JÉZÉGOU (FIPA 2021)</p>
+        <p><i class="fa-solid fa-envelope"></i> Email: <a href="mailto://pierre-yves.jezegou@ensta-bretagne.org">pierre-yves.jezegou@ensta-bretagne.org</a></p>
+        <p><i class="fa-solid fa-envelope"></i> Email: <a href="mailto://jezegoup@gmail.com">jezegoup@gmail.com</a></p>
+        <!--<p><i class="fa-brands fa-github"></i> Github: <a href="https://github.com/piwithy">piwithy</a></p>-->
     </div>
-    <div class="title_config">
-        <h2>Configure Fields</h2>
-        <table>
-            <?php
-            if ($result) {
-                while ($row = $result->fetch_assoc()) {
-                    $escaped_row = array();
-                    foreach ($row as $key => $value) $escaped_row[$key] = htmlspecialchars($value);
-                    ?>
-                    <tr>
-                        <td><?= $escaped_row['field_id'] ?></td>
-                        <td><?= $escaped_row['field_name'] ?></td>
-                        <td>
-                            <form action="../common/edit_field.php" method="post">
-                                <input type="hidden" name="field_id" id="field_id"
-                                       value="<?= $escaped_row['field_id'] ?>">
-                                <input type="hidden" name="field_name" id="field_name"
-                                       value="<?= $escaped_row['field_name'] ?>">
-                                <label>
-                                    <input type="text" name="field_value" id="field_value"
-                                           value="<?= $escaped_row['field_value'] ?>">
-                                </label>
-                                <input type="submit" value="Edit!">
-                            </form>
-                        </td>
-                    </tr>
-                    <?php
-                }
-            }
-
-            ?>
-        </table>
-    </div>
-
 
     <div class="footer">Copyright &copy; Pierre-Yves Jézégou 2021 -
         <script>document.write((new Date().getFullYear()).toString())</script>
     </div>
 
 </div>
+
 </body>
 </html>
