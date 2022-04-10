@@ -12,7 +12,7 @@ if (isset($_SESSION['loggedin'])) {
     <meta charset="UTF-8">
     <title> Piwithy's Voting App | Login</title>
     <link rel="icon" href="../img/piwithy_logo_black.png">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <script src="https://kit.fontawesome.com/09d79beec4.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -38,7 +38,12 @@ if (isset($_SESSION['loggedin'])) {
         <input type="password" name="password" placeholder="Password" id="password" required>
         <input type="submit" value="Login">
     </form>
-
 </div>
+
+<div class="footer_login">Copyright &copy; Pierre-Yves Jézégou 2021 -
+    <script>document.write((new Date().getFullYear()).toString())</script>
+</div>
+
+
 </body>
 </html>

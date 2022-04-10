@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Piwithy's Voting App</title>
     <link rel="icon" href="img/piwithy_logo_black.png">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <script src="https://kit.fontawesome.com/09d79beec4.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
     <script
@@ -18,15 +18,15 @@
 
     <div class="ranking"></div>
 
-    <div class="footer"></div>
+    <div class="footer">Copyright &copy; Pierre-Yves Jézégou 2021 -
+        <script>document.write((new Date().getFullYear()).toString())</script>
+    </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         const refresh_timer = 5000;
         const candidate_disp = 5;
-        // footer Informations
-        $('.footer').html(`Copyright &copy; Pierre-Yves Jezegou 2021-${(new Date().getFullYear())}`);
 
         // caption Load
         $('.caption').load("common/page_gen.php?caption");

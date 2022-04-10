@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['loggedin'])) {
+if (!isset($_SESSION['loggedin'], $_SESSION['is_admin'])) {
     header('Location: index.php');
     exit;
 }
@@ -10,6 +10,19 @@ $con = mysqli_connect($_ENV["DB_ADDRESS"], $_ENV["DB_USER"], $_ENV["DB_PASS"], $
 if (mysqli_connect_errno()) {
     exit('Failed to connect MySQL: ' . mysqli_connect_error());
 }
+$qry = $con->prepare("SELECT id, active FROM accounts where id=?");
+$qry->bind_param('i', $_SESSION['id']);
+$qry->execute();
+$qry->store_result();
+if ($qry->num_rows > 0) {
+    $qry->bind_result($uid, $active);
+    $qry->fetch();
+    if ($active == 0) header("Location: logout.php");
+} else {
+    header("Location: logout.php");
+}
+$qry->close();
+
 
 $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE active=1 GROUP BY vote_target ORDER BY count DESC, vote_target ASC;");
 
@@ -20,7 +33,7 @@ $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE act
     <meta charset="utf-8">
     <title>Piwithy's Voting App | Voting Page</title>
     <link rel="icon" href="../img/piwithy_logo_black.png">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <script src="https://kit.fontawesome.com/09d79beec4.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <script
@@ -46,14 +59,14 @@ $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE act
 <nav class="navtop">
     <div>
         <h1><a href="/">Piwithy's Voting App</a></h1>
-        <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-        <a class="reset" href="../common/edit_vote.php?reset=true" style="background-color: red"><i class="fa fa-trash">
-                Reset Votes!</i></a>
+        <?php if ($_SESSION['is_admin'] == 1) echo "<a href='users.php'><i class='fa-solid fa-user-group'></i>Users</a>" ?>
+        <a href="config.php"><i class="fa-solid fa-gear"></i>App Config</a>
+        <?php if($_SESSION['is_admin']==1) echo "<a class='reset' href='../common/edit_vote.php?reset=true' style='background-color: red'><i class='fa-solid fa-trash-can'></i>Clear Votes</a>"?>
         <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
 </nav>
 <div class="content">
-    <div id="vote_info">
+    <div id="vote_info" <?php if (empty($_GET)) echo 'style="visibility: hidden;"' ?>>
         <?php
         if (isset($_GET['form_error'])) {
             echo '<span class="error">ERROR: Please use a Form!</span>';
@@ -63,6 +76,19 @@ $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE act
         } elseif (isset($_GET['vote_success'])) {
             $vote_added = $_GET['vote_success'];
             echo "<span class='success'>$vote_added votes successfully added!</span>";
+        } elseif (isset($_GET['reset_success'])) {
+            echo "<span class='success'>Vote Successfully Reset !</span>";
+        } elseif (isset($_GET['reset_error'])) {
+            echo "<span class='error'>There was an error while resetting votes !</span>";
+        } elseif (isset($_GET['form_field_error'])) {
+            switch ($_GET['form_field_error']) {
+                case 'vote':
+                    echo "<span class='error'>Please fill all fields of the Vote form</span>";
+                    break;
+                case 'correct':
+                    echo "<span class='error'>Please fill all fields of the Correction form</span>";
+                    break;
+            }
         }
 
         ?>
@@ -152,6 +178,11 @@ $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE act
             </tbody>
         </table>
     </div>
+
+    <div class="footer">Copyright &copy; Pierre-Yves Jézégou 2021 -
+        <script>document.write((new Date().getFullYear()).toString())</script>
+    </div>
+
 </div>
 
 </body>

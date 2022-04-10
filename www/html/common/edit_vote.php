@@ -22,7 +22,7 @@ if (!isset($_POST['form_id']) && !isset($_GET['reset'])) {
     header("Location: ../admin/vote.php?form_error");
 }
 
-if ($_GET['reset'] == 'true') {
+if (isset($_GET['reset']) && $_GET['reset'] == 'true') {
     $result = $con->query("UPDATE votes SET active=0 WHERE active=1");
     if ($result) {
         header("Location: ../admin/vote.php?reset_success");

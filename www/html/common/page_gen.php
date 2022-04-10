@@ -9,7 +9,13 @@ if (isset($_GET['caption'])) {
     $title = "Test Title";
     $subtitle = "Test Subtitle";
 
-    // TODO DB Fetch for Caption
+    $result = $con->query("SELECT field_value FROM custom_fields WHERE field_name='index_title';");
+    $row = $result->fetch_assoc();
+    $title= $row["field_value"];
+
+    $result = $con->query("SELECT field_value FROM custom_fields WHERE field_name='index_quote';");
+    $row = $result->fetch_assoc();
+    $subtitle= $row["field_value"];
 
     echo "<p><h2>$title</h2><br><span>$subtitle</span></p>";
 

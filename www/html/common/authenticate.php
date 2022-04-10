@@ -13,24 +13,25 @@ if (!isset($_POST['username'], $_POST['password'])) {
     exit('Please fill both Username & Password!');
 }
 
-if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username=?')) {
+if ($stmt = $con->prepare('SELECT id, password, is_admin, active FROM accounts WHERE username=?')) {
     $stmt->bind_param('s', $_POST['username']);
     $stmt->execute();
 
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $password);
+        $stmt->bind_result($id, $password, $is_admin, $active);
         $stmt->fetch();
         // Account exists, now we verify the password.
         // Note: remember to use password_hash in your registration file to store the hashed passwords.
-        if (password_verify($_POST['password'], $password)) {
+        if (password_verify($_POST['password'], $password) && $active == 1) {
             // Verification success! User has logged-in!
             // Create sessions, so we know the user is logged in, they basically act like cookies but remember the data on the server.
             session_regenerate_id();
             $_SESSION['loggedin'] = true;
             $_SESSION['name'] = $_POST['username'];
             $_SESSION['id'] = $id;
+            $_SESSION['is_admin'] = $is_admin;
             header('Location: ../admin/vote.php');
         } else {
             header('Location: ../admin/index.php?login_error');
