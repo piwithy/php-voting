@@ -154,7 +154,7 @@ $result = $con->query("SELECT * FROM custom_fields;");
                                    id="active" <?php if ($escaped_row['active'] == 1) echo "checked" ?>>
                             <span class="slider round"></span>
                         </label><br/>
-                        <input type="submit" value="Update">
+                        <input type="submit" value="Update"  <?php if($escaped_row['username'] == 'admin' && $_SESSION['name'] != 'admin' ) echo "disabled";?>>
                     </form>
 
                 </div>
