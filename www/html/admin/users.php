@@ -69,7 +69,7 @@ $result = $con->query("SELECT * FROM custom_fields;");
         <h1><a href="/">Piwithy's Voting App</a></h1>
         <a href="config.php"><i class="fa-solid fa-gear"></i>App Config</a>
         <a href="vote.php"><i class="fa-solid fa-person-booth"></i>Voting Page</a>
-        <?php if($_SESSION['is_admin']==1) echo "<a class='reset' href='../common/edit_vote.php?reset=true' style='background-color: red'><i class='fa-solid fa-trash-can'></i>Clear Votes</a>"?>
+        <?php if ($_SESSION['is_admin'] == 1) echo "<a class='reset' href='../common/edit_vote.php?reset=true' style='background-color: red'><i class='fa-solid fa-trash-can'></i>Clear Votes</a>" ?>
         <a href="contact.php"><i class="fa-solid fa-address-book"></i>Contact</a>
         <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
@@ -95,6 +95,10 @@ $result = $con->query("SELECT * FROM custom_fields;");
                     echo "<span class='error'>Please fill all fields of the Add User Form</span>";
                     break;
             }
+        } elseif (isset($_GET['user_edit_success'])) {
+            echo "<span class='success'> User successfully edited! </span>";
+        } elseif (isset($_GET['user_edit_error'])) {
+            echo "<span class='error'> Unknown Error while Editing User </span>";
         }
 
         ?>
