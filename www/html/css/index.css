@@ -1,87 +1,59 @@
-*{
-    font-family: verdana, serif;
+* {
+    font-family: 'Noto Sans', sans-serif;
     margin: 0;
 }
 
-body{
+body {
     background-color: #eee;
 }
 
-img{
-    max-width: 500px;
-}
-
-.menu{
-    background: #333;
-}
-
-.menu nav ul{
-    list-style-type: none;
-    padding: 0;
-}
-
-.menu nav a{
-    text-decoration: none;
-    text-align: center;
-    color: #fff;
-    display: block;
-    padding: 10px;
-}
-.menu nav a:hover{
-    background: #555;
-}
-
-@media screen and (min-width: 768px){
-
-    .menu nav ul{
-        display: flex;
-    }
-
-    .menu nav li{
-        flex: 1 1 0;
-    }
-}
-
-
-.wrapper{
+.wrapper {
     width: 100%;
-    /*max-width: 1080px;*/
     margin: 0 auto;
-}
-
-.Contents{
     text-align: center;
     justify-content: center;
     display: flex;
     flex-direction: column;
 }
 
-.BadPass{
-    color:red;
-    padding :20px;
-}
-
-.success{
-    color: limegreen;
-}
-
-.error{
-    color: red;
-}
-
-.footer{
-    text-align: center;
-    font-family: "Open Sans", sans-serif;
-}
-
-.footer span{
+table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
     padding: 0;
-    flex: 1 1 0;
-}
-
-.footer img{
-    padding: 0;
-    height: 100%;
     width: 100%;
-    object-fit: fill;
+    table-layout: fixed;
+}
+
+.info {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info .elem {
+    flex: 1 1 0;
+    text-align: center;
+    min-width: 300px;
+}
+
+.caption {
+    font-size: 2em;
+    margin: .5em 0 .75em;
+}
+
+table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+}
+
+table th, table td {
+    padding: .625em;
+    text-align: center;
+}
+
+table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
 }

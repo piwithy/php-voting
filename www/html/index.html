@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Piwithy's Voting App</title>
+    <link rel="icon" href="img/piwithy_logo_black.png">
+    <script src="https://kit.fontawesome.com/09d79beec4.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="caption"></div>
+
+    <div class="ranking"></div>
+
+    <div class="footer">Copyright &copy; Pierre-Yves Jézégou 2021 -
+        <script>document.write((new Date().getFullYear()).toString())</script>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        const refresh_timer = 5000;
+        const candidate_disp = 5;
+
+        // caption Load
+        $('.caption').load("common/page_gen.php?caption");
+        //ranking Load
+        $('.ranking').load(`common/page_gen.php?ranking&count=${candidate_disp}`);
+
+        //auto Refresh
+        setInterval(function () {
+            // caption Load
+            $('.caption').load("common/page_gen.php?caption");
+            //ranking Load
+            $('.ranking').load(`common/page_gen.php?ranking&count=${candidate_disp}`);
+        }, refresh_timer)
+
+    });
+</script>
+
+</body>
+</html>
