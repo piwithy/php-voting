@@ -72,10 +72,10 @@ $result = $con->query("SELECT vote_target,COUNT(*) AS count FROM votes WHERE act
         if (isset($_GET['form_error'])) {
             echo '<span class="error">ERROR: Please use a Form!</span>';
         } elseif (isset($_GET['vote_add_err'])) {
-            $vote_added = $_GET['vote_add_err'];
+            $vote_added = htmlspecialchars($_GET['vote_add_err']);
             echo "<span class='error'>ERROR While adding Votes ($vote_added votes added)</span>";
         } elseif (isset($_GET['vote_success'])) {
-            $vote_added = $_GET['vote_success'];
+            $vote_added = htmlspecialchars($_GET['vote_success']);
             echo "<span class='success'>$vote_added votes successfully added!</span>";
         } elseif (isset($_GET['reset_success'])) {
             echo "<span class='success'>Vote Successfully Reset !</span>";

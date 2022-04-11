@@ -70,9 +70,9 @@ $result = $con->query("SELECT * FROM custom_fields;");
     <div id="vote_info" <?php if (empty($_GET)) echo 'style="visibility: hidden;"' ?>>
         <?php
         if (isset($_GET['edit_success'], $_GET['field_name'])) {
-            echo "<span class='success'> field \"" . $_GET['field_name'] . "\" Successfully edited! </span>";
+            echo "<span class='success'> field \"" . htmlspecialchars($_GET['field_name']) . "\" Successfully edited! </span>";
         } elseif (isset($_GET['edit_failed'], $_GET['field_name'])) {
-            echo "<span class='error'> Error while editing field \"" . $_GET['field_name'] . "\"! </span>";
+            echo "<span class='error'> Error while editing field \"" . htmlspecialchars($_GET['field_name']) . "\"! </span>";
         }
 
         ?>
