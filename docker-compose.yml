@@ -27,9 +27,8 @@ services:
   mariadb:
     image: mariadb
     restart: on-failure
-    ports:
-      - "3306:3306"
     env_file:
       - mariadb/.env
     volumes:
       - ./mariadb/data:/var/lib/mysql
+
