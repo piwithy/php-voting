@@ -3,7 +3,9 @@
 $db_address = $_ENV["DB_ADDRESS"];
 $db_user = $_ENV["DB_USER"];
 $db_pass = $_ENV["DB_PASS"];
+$db_root_pass= $_ENV["DB_ROOT_PASS"];
 $db_name = $_ENV["DB_NAME"];
+$default_admin_password = $_ENV["DEFAULT_ADMIN_PASSWORD"];
 
 
 $mysqli = new mysqli($db_address, "root", "P4VKmb3TyzNH2k4Y");
@@ -36,7 +38,7 @@ $mysqli->query(" CREATE table accounts(id int(11) NOT NULL PRIMARY KEY AUTO_INCR
 $mysqli->query("CREATE TABLE IF NOT EXISTS custom_fields(field_id INTEGER PRIMARY KEY AUTO_INCREMENT, field_name VARCHAR(255), field_value VARCHAR(1024));");
 
 $user = "admin";
-$pass = password_hash("admin", PASSWORD_BCRYPT);
+$pass = password_hash($default_admin_password, PASSWORD_BCRYPT);
 
 $mysqli->query("INSERT INTO accounts (username, password) SELECT '$user', '$pass' WHERE NOT EXISTS(SELECT * FROM accounts);");
 $mysqli->query("UPDATE accounts SET is_admin=1, active=1 WHERE username='admin'");
